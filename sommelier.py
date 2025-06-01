@@ -86,14 +86,20 @@ def describe_dish_flavor(image_bytes, query):
     
 #서치 함수를 만들기
 def search_wine(dish_flavor):
-    results = vector_store.similarity_search(
+    # similarity_search_with_score() 사용하여 점수 포함된 결과 반환
+    results = vector_store.similarity_search_with_score(
         dish_flavor,
         k=2
     )
 
-    return{
+    # 유사도 점수와 리뷰를 리스트로 반환
+    wine_reviews = [
+        {"review": doc.page_content, "score": score} for doc, score in results
+    ]
+
+    return {
         "dish_flavor": dish_flavor,
-        "wine_reviews":"\n\n".join([doc.page_content for doc in results])
+        "wine_reviews": wine_reviews  # 유사도 점수 포함된 리스트 반환
     }
 
 

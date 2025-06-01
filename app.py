@@ -27,7 +27,12 @@ with col1:
                 wine_search_result = search_wine(dish_flavor)
                 st.markdown("#### 🫶 와인리뷰검색결과")
 
-                st.text(wine_search_result["wine_reviews"])
+                
+                for item in wine_search_result["wine_reviews"]:
+                    # 유사도 점수를 퍼센트로 변환
+                    percent = round(item["score"] * 100, 1)
+                    # 유사도 점수와 리뷰를 마크다운에 출력
+                    st.markdown(f"- **유사도: {percent}%**  \n👉 {item['review']}")
             with st.spinner("3단계: AI 소믈리에가 와인 페어링에 대한 추천글을 생성하는 중..."):
                 wine_rrecommandation = recommand_wine({
                     "dish_flavor":dish_flavor,
